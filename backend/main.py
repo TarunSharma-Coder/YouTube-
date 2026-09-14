@@ -144,6 +144,11 @@ def channel_summary(channel: Dict[str, Any], videos: pd.DataFrame) -> Dict[str, 
     }
 
 
+@app.api_route("/", methods=["GET", "HEAD"])
+def root() -> Dict[str, str]:
+    return {"status": "ok", "message": "YouTube Growth Intelligence API is running"}
+
+
 @app.get("/api/health")
 def health() -> Dict[str, str]:
     return {"status": "ok"}
