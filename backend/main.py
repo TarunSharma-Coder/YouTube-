@@ -33,14 +33,24 @@ from backend.routes.comment_routes import router as comment_router  # noqa: E402
 from backend.routes.insight_routes import router as insight_router  # noqa: E402
 
 
+import os
+
 app = FastAPI(title="YouTube Growth Intelligence API", version="0.1.0")
+
+cors_origins_env = os.getenv("CORS_ORIGINS", "")
+allowed_origins = (
+    [origin.strip() for origin in cors_origins_env.split(",") if origin.strip()]
+    if cors_origins_env
+    else [
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+    ]
+)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-    ],
+    allow_origins=allowed_origins,
+    allow_origin_regex=r"https://.*\.vercel\.app|http://localhost:.*|http://127\.0\.0\.1:.*",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
